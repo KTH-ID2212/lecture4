@@ -25,10 +25,10 @@ public class HttpClient {
             wr.println(hostHeader);
             wr.println();
             wr.flush();
-            BufferedReader rd
+            BufferedReader reader
                     = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String str;
-            while ((str = rd.readLine()) != null) {
+            while ((str = reader.readLine()) != null) {
                 System.out.println(str);
             }
         } catch (IOException e) {
