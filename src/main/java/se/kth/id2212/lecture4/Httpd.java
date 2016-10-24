@@ -43,13 +43,13 @@ public class Httpd {
             }
         }
         try {
-            ServerSocket ss = new ServerSocket(port);
+            ServerSocket listeningSocket = new ServerSocket(port);
             while (true) {
                 // the main server's loop
-                Socket s = ss.accept();
-                Handler h = new Handler(s, base);
-                h.setPriority(h.getPriority() + 1);
-                h.start();
+                Socket clientSocket = listeningSocket.accept();
+                Thread handler = new Thread(new Handler(clientSocket, base));
+                handler.setPriority(handler.getPriority() + 1);
+                handler.start();
             }
         } catch (IOException e) {
             System.out.println(e);
@@ -61,7 +61,7 @@ public class Httpd {
 /**
  * The class Handler processes the client's request in a separate thread
  */
-class Handler extends Thread implements Serializable {
+class Handler implements Runnable {
 
     static final String SERVER = "Server: Httpd 1.0";
     static final String OK = "HTTP/1.0 200 OK";
