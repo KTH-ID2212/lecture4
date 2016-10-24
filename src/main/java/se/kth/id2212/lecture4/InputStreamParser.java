@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StreamTokenizer;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 /**
  * Counts how many words and numbers there are in a HTTP response. This illustrates how the
@@ -19,7 +20,9 @@ public class InputStreamParser {
         int timeoutMillis = 10000;
         String httpRequest = "GET / HTTP/1.1";
         String hostHeader = "Host: " + httpServer;
-
+        int numCounter = 0;
+        int wordCounter = 0;
+        
         try (Socket socket = new Socket(httpServer, serverPort)) {
             socket.setSoTimeout(timeoutMillis);
             PrintWriter wr = new PrintWriter(socket.getOutputStream());
@@ -29,8 +32,6 @@ public class InputStreamParser {
             wr.flush();
             StreamTokenizer rd = new StreamTokenizer(new BufferedReader(new InputStreamReader(
                     socket.getInputStream())));
-            int numCounter = 0;
-            int wordCounter = 0;
             int lineBreak = 0;
             while (rd.nextToken() != StreamTokenizer.TT_EOF) {
                 switch (rd.ttype) {
@@ -46,9 +47,10 @@ public class InputStreamParser {
                         }
                 }
             }
+        } catch (SocketTimeoutException timeout) {
             System.out.println();
-            System.out.println("NUM = " + numCounter);
-            System.out.println("WORD = " + wordCounter);
+            System.out.println("Numbers: " + numCounter);
+            System.out.println("Words: " + wordCounter);
         } catch (IOException e) {
             System.err.println(e);
         }
