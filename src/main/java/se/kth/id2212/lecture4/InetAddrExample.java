@@ -10,19 +10,19 @@ import java.util.Arrays;
 public class InetAddrExample {
 
     public static void main(String[] args) {
-        InetAddress ip1 = null;
-        InetAddress ip2 = null;
+        InetAddress kthSe = null;
+        InetAddress someAddr = null;
         InetAddress localIP = null;
-        InetAddress[] ips = null;
+        InetAddress[] allKthSe = null;
         try {
             localIP = InetAddress.getLocalHost();
-            ip1 = InetAddress.getByName("kth.se");
-            ip2 = InetAddress.getByName("130.237.214.1");
-            ips = InetAddress.getAllByName("kth.se");
-            System.out.println("ip1: " + ip1);
-            System.out.println("ip2: " + ip2);
+            kthSe = InetAddress.getByName("kth.se");
+            someAddr = InetAddress.getByName("130.237.214.1");
+            allKthSe = InetAddress.getAllByName("kth.se");
+            System.out.println("kth.se: " + kthSe);
+            System.out.println("130.237.214.1: " + someAddr);
             System.out.println("localIP: " + localIP);
-            System.out.println("ips: " + Arrays.toString(ips));
+            System.out.println("all kth.se addrs: " + Arrays.toString(allKthSe));
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
